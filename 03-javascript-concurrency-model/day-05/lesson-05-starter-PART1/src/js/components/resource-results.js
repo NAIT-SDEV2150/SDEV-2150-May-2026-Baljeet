@@ -14,15 +14,13 @@ template.innerHTML = `
     </div>
   </section>`;
 
+// TODO: Stage 2: This component will optionally fetch its own data
+// when a `source` attribute is provided (attribute-driven async side effects)
 class ResourceResults extends HTMLElement {
+  // TODO: Stage 2: Track loading and error state when fetching from `source`
+  // Example: #isLoading = false; #error = null;
   #results = [];
-
-  // Step 3: Store the filtered dataset and current filters, then derive and render filtered results.
-  // TODO: Keep a filtered copy of the dataset (e.g., #filteredResults).
-  // TODO: Add a private filters field that triggers filtering and re-render.
-  
   #filteredResults = [];
-  // TODO: Add a private filters field that triggers filtering and re-render.
   #filters = {
     query: '',
     category: 'all',
@@ -36,38 +34,38 @@ class ResourceResults extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
 
-  
+  // TODO: Stage 2: Observe the `source` attribute
 
   set results(data) {
     this.#results = data;
-    // Step 3: Set the filtered results initially to the full dataset.
-    this.#filteredResults = data;
-    // TODO: Initialize the filtered results.
+    this.#filteredResults = [...data];
     this.render();
   }
- // TODO: Add a filters property (e.g., set filters(filters)) that triggers filtering and re-render.
 
   set filters(filters) {
-    // Retain ALL existing filter values unless explicitly overridden
     this.#filters = {
       ...this.#filters,
       ...filters,
     };
     this.#applyFilters();
   }
-  
+
+  // TODO: Stage 2: Private method to fetch data from the provided source URL
+
+  // TODO: Stage 2: When `source` changes:
+  // - Avoid refetching if the value is unchanged
+  // - fetch(source)
+  // - handle loading and error states
+  // - set results with fetched data
+
   _handleResultClick(event) {
     const button = event.target.closest('button[data-id]');
     if (button) {
       const selectedId = button.getAttribute('data-id');
-      // Mark the selected result as active
-      // NOTE: can use and explain the optional chaining operator here (as below) OR just use an if statement
       this.shadowRoot.querySelector('button.active')?.classList.remove('active');
       button.classList.add('active');
 
-      // Find the selected resource from the results
       const resource = this.#results.find(r => r.id === selectedId);
-      // Dispatch a custom event with the selected resource details
       const selectedEvent = new CustomEvent('resource-selected', {
         detail: { resource },
         bubbles: true,
@@ -87,15 +85,11 @@ class ResourceResults extends HTMLElement {
     this.shadowRoot.removeEventListener('click', this._handleResultClick);
   }
 
-
-
-   // TODO: Filter without mutating the original dataset.
   #applyFilters() {
     const { query, category, openNow, virtual } = this.#filters;
     const normalizedQuery = query.trim().toLowerCase();
     const normalizedCategory = (category || '').trim().toLowerCase();
 
-    // There are many ways to implement filtering; the following is just one approach.
     this.#filteredResults = this.#results.filter((result) => {
       if (normalizedQuery) {
         const haystack = [
@@ -134,8 +128,7 @@ class ResourceResults extends HTMLElement {
   render() {
     const content = template.content.cloneNode(true);
 
-    // Step 3: Render from the derived (filtered) results, show an empty-state when none match.
-    // TODO: Use the filtered results to build the list items.
+    // TODO: Stage 2: Render loading and error states before results when fetching asynchronously
     if (this.#filteredResults.length) {
       // Generate the list of results to display
       const resultsHtml = this.#filteredResults.map(result => `<button type="button" class="list-group-item list-group-item-action" data-id="${result.id}">

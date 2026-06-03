@@ -1,5 +1,4 @@
 const template = document.createElement('template');
-// TODO: Update the template to support dynamic resource details
 template.innerHTML = `
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
   <section class="h-100">
@@ -7,9 +6,10 @@ template.innerHTML = `
       <div class="card-header">
         <strong>Details</strong>
       </div>
-
+      <!-- Details content will be injected here -->
       <slot></slot>
 
+      <!-- Action buttons may be dealt with in a future example -->
       <div class="card-footer d-flex gap-2">
         <button class="btn btn-outline-secondary" type="button">Copy email</button>
         <button class="btn btn-outline-primary" type="button">Open map</button>
@@ -18,9 +18,7 @@ template.innerHTML = `
   </section>`;
 
 class ResourceDetails extends HTMLElement {
-  // TODO: Create private field for resource data
-
-  #resource =null;
+  #resource = null;
 
   constructor() {
     super();
@@ -31,22 +29,18 @@ class ResourceDetails extends HTMLElement {
     this.render();
   }
 
-  // TODO: Implement setter for resource data, remember to render
+  set resource(data) {
+    this.#resource = data;
+    this.render();
+  }
 
-  set resource(data)
- {
-  this.#resource = data;
-  this.render();
- }
   render() {
-    // TODO: Render resource details if available
-    if (this.#resource){
+    if (this.#resource) {
+      const detailsContainer = document.createElement('div');
+      detailsContainer.classList.add('card-body');
 
-      const detailContainer = document.createElement('div');
-      detailContainer.classList.add('card-body');
-
-      detailContainer.innerHTML = `
-       <h2 class="h5"> ${this.#resource.title}</h2>
+      detailsContainer.innerHTML = `
+        <h2 class="h5">${this.#resource.title}</h2>
         <p class="text-body-secondary mb-2">${this.#resource.summary}</p>
 
         <dl class="row mb-0">
@@ -61,20 +55,16 @@ class ResourceDetails extends HTMLElement {
 
           <dt class="col-4">Contact</dt>
           <dd class="col-8">${this.#resource.contact}</dd>
-        </dl>`
+        </dl>
+      `;
 
-
-   
-    this.shadowRoot.innerHTML= '';
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.shadowRoot.querySelector('slot').appendChild(detailContainer);
-
-    }
-    else{
-
-      this.shadowRoot.innerHTML= '';
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    
+      this.shadowRoot.innerHTML = '';
+      this.shadowRoot.appendChild(template.content.cloneNode(true));
+      this.shadowRoot.querySelector('slot').appendChild(detailsContainer);
+    } else {
+      // If no resource is selected, just render the template
+      this.shadowRoot.innerHTML = '';
+      this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
   }
 }

@@ -19,33 +19,33 @@ class ResourceResults extends HTMLElement {
 
   // Step 3: Store the filtered dataset and current filters, then derive and render filtered results.
   // TODO: Keep a filtered copy of the dataset (e.g., #filteredResults).
-  // TODO: Add a private filters field that triggers filtering and re-render.
-  
-  #filteredResults = [];
-  // TODO: Add a private filters field that triggers filtering and re-render.
-  #filters = {
-    query: '',
-    category: 'all',
-    openNow: false,
-    virtual: false,
-  };
+#filteredResults = [];
 
+  // TODO: Add a private filters field that triggers filtering and re-render.
+
+  #filters = {
+    query = '',
+    category = 'all',
+    openNow = false,
+    virtual = false,
+  };
+  
   constructor() {
     super();
     this._handleResultClick = this._handleResultClick.bind(this);
     this.attachShadow({ mode: 'open' });
   }
 
-  
+  // TODO: Add a filters property (e.g., set filters(filters)) that triggers filtering and re-render.
 
   set results(data) {
     this.#results = data;
     // Step 3: Set the filtered results initially to the full dataset.
-    this.#filteredResults = data;
-    // TODO: Initialize the filtered results.
+    this.#filteredResults = [...data]    // TODO: Initialize the filtered results.
     this.render();
   }
- // TODO: Add a filters property (e.g., set filters(filters)) that triggers filtering and re-render.
+
+   // TODO: Add a filters property (e.g., set filters(filters)) that triggers filtering and re-render.
 
   set filters(filters) {
     // Retain ALL existing filter values unless explicitly overridden
@@ -87,11 +87,9 @@ class ResourceResults extends HTMLElement {
     this.shadowRoot.removeEventListener('click', this._handleResultClick);
   }
 
-
-
-   // TODO: Filter without mutating the original dataset.
-  #applyFilters() {
-    const { query, category, openNow, virtual } = this.#filters;
+  // TODO: Filter without mutating the original dataset.
+#applyFilters() {
+    const { query, category, openNow, virtual } = this.#filters; // object destructuring 
     const normalizedQuery = query.trim().toLowerCase();
     const normalizedCategory = (category || '').trim().toLowerCase();
 
@@ -130,7 +128,6 @@ class ResourceResults extends HTMLElement {
 
     this.render();
   }
-
   render() {
     const content = template.content.cloneNode(true);
 

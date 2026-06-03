@@ -57,7 +57,7 @@ class ResourceFilters extends HTMLElement {
     this._handleCategoryClick = this._handleCategoryClick.bind(this);
   }
 
-  connectedCallback() { // when you component get attached to main DOM
+  connectedCallback() {
     this.render();
     // TODO: Add a submit listener to #frm-filter.
     this._formEl = this.shadowRoot.querySelector('#frm-filter');
