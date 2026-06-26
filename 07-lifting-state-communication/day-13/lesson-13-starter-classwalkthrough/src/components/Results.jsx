@@ -1,23 +1,42 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 
 import ResultsItem from './ResultsItem';
 import { resources } from '../data/resources';
 import Card from './ui/Card';
 
-export default function Results() {
-  const [selectedResource, setSelectedResource] = useState(null);
+export default function Results(
+  {
+    selectedResource,
+    onSelectResource,
+    searchTerm,
+    selectedCategories,
+    openNowOnly,
+    virtualOnly,
+  }) {
 
   return (
     <Card title="Results">
       <ul className="divide-y divide-gray-200">
-        {resources.map((r) => (
+
+      {resources.filter((r) => {
+
+        const matcesSearch = r.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(r.category.toLowerCase());
+        const matchOpenNow = !openNowOnly || r.openNow;
+        const matchVirtual = !virtualOnly || r.virtual;
+
+        return matcesSearch && matchesCategory && matchOpenNow && matchVirtual;
+
+
+      })
+      .map((r) => (
           <ResultsItem
             key={r.id}
             title={r.title}
             category={r.category}
             summary={r.summary}
             location={r.location}
-            onClick={() => setSelectedResource(r)}
+            onClick={() => onSelectResource(r)}
             selected={selectedResource?.id === r.id}
           >
             {/* children: optional badge content */}

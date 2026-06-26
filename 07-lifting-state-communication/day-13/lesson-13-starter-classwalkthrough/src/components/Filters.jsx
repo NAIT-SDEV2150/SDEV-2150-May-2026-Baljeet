@@ -1,23 +1,37 @@
-import { useState } from 'react';
+//import { useState } from 'react';
 import Card from './ui/Card';
 
-export default function Filters() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [openNowOnly, setOpenNowOnly] = useState(false);
-
+export default function Filters(
+  {
+    searchTerm,
+    onSearchChange,
+    selectedCategories,
+    onCategoryToggle,
+    openNowOnly,
+    onOpenNowChange,
+    virtualOnly,
+    onVirtualOnlyChange,
+  }
+) {
+  
   function toggleCategory(category) {
-    setSelectedCategories((prev) => {
+    onCategoryToggle((prev) => {
       if (prev.includes(category)) {
         return prev.filter((c) => c !== category);
       }
 
       return [...prev, category];
     });
-  }
+
+    }
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (!searchTerm.trim() && selectedCategories.length === 0 && !openNowOnly) {
+      alert('Please select at least one filter option.');
+      return;
+    }
     console.log('Filters submitted');
   }
 
@@ -34,13 +48,13 @@ export default function Filters() {
               type="text"
               placeholder="Try: tutoring, mental health, bursary"
               className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => onSearchChange(e.target.value)}
               value={searchTerm}
             />
           </div>
-          {/* <p className="text-sm text-base-content/70">
+          <p className="text-sm text-base-content/70">
             Searching for: {searchTerm}
-          </p> */}
+          </p>
 
           <hr className="border-gray-200" />
 
@@ -51,8 +65,8 @@ export default function Filters() {
                 <button
                   key={label}
                   type="button"
-                  className={`${selectedCategories.includes(label) && 'bg-sky-600 text-white'} rounded border border-sky-600 px-3 py-1 text-xs font-semibold text-sky-700 hover:bg-sky-50 hover:text-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-200`}
-                  onClick={() => toggleCategory(label)}
+                  className={`${selectedCategories.includes(label.toLowerCase()) && 'bg-sky-600 text-white'} rounded border border-sky-600 px-3 py-1 text-xs font-semibold text-sky-700 hover:bg-sky-50 hover:text-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-200`}
+                  onClick={() => toggleCategory(label.toLowerCase())}
                 >
                   {label}
                 </button>
@@ -69,7 +83,7 @@ export default function Filters() {
                 id="openNow"
                 className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600 accent-sky-600"
                 checked={openNowOnly}
-                onChange={(e) => setOpenNowOnly(e.target.checked)}
+                onChange={(e) => onOpenNowChange(e.target.checked)}
               />
               Open now
             </label>
@@ -80,6 +94,8 @@ export default function Filters() {
                 type="checkbox"
                 id="virtual"
                 className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600 accent-sky-600"
+                checked = {virtualOnly}
+                onChange={(e) => onVirtualOnlyChange(e.target.checked)}
               />
               Virtual options
             </label>
@@ -93,9 +109,13 @@ export default function Filters() {
               className="rounded border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
               // First student exercise solution
               onClick={() => {
-                setSearchTerm('');
-                setSelectedCategories([]);
-                setOpenNowOnly(false);
+                onSearchChange('');
+                onCategoryToggle([]);
+                onOpenNowChange(false);
+                onVirtualOnlyChange(false);
+               // setSearchTerm('');
+               // setSelectedCategories([]);
+               // setOpenNowOnly(false);
               }}
             >
               Reset
