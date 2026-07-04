@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 
 const API_BASE_URL = 'http://localhost:3000';
 
-export default function useResources() {
-  const [resources, setResources] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default function useResurces() {
+    const [resources, setResources] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  async function fetchResources(signal) {
+    async function fetchResources(signal) {
     setIsLoading(true);
     setError(null);
 
@@ -29,7 +29,7 @@ export default function useResources() {
     }
   }
 
-  useEffect(() => {
+   useEffect(() => {
     const controller = new AbortController();
     fetchResources(controller.signal);
 
@@ -42,6 +42,5 @@ export default function useResources() {
     const controller = new AbortController();
     fetchResources(controller.signal);
   }
-
-  return { resources, isLoading, error, refetch };
+return { resources, isLoading, error, refetch };
 }

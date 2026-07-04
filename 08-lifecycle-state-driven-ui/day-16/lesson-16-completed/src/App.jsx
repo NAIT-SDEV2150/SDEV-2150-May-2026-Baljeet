@@ -6,7 +6,7 @@ import Filters from './components/Filters';
 import Results from './components/Results';
 import Details from './components/Details';
 import PageLayout from './components/layout/PageLayout';
-import { useResources } from './hooks/useResources';
+import  useResources  from './hooks/useResources';
 
 
 
