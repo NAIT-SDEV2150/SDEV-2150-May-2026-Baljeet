@@ -1,10 +1,11 @@
-import { Form, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useState } from 'react';
 
 export default function ResourceForm({
   initialData,
   isEditing,
   isSubmitting,
+  onSubmit,
 }) {
   const [formData, setFormData] = useState(initialData);
 
@@ -26,9 +27,13 @@ export default function ResourceForm({
       setFormData(initialData);
     }
   }
+  function handleSubmit(e) {
+  e.preventDefault();
 
+  onSubmit(formData);
+}
   return (
-    <Form method="post" className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-1">
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
           Title
@@ -153,6 +158,6 @@ export default function ResourceForm({
               : 'Add Resource'}
         </button>
       </div>
-    </Form>
+    </form>
   );
 }

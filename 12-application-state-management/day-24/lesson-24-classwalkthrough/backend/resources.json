@@ -43,6 +43,28 @@
       "contact": "it@nait.ca",
       "virtual": false,
       "openNow": true
+    },
+    {
+      "id": "res_1785543267939_1yp3ui",
+      "title": "asd",
+      "category": "asd",
+      "summary": "asd",
+      "location": "asd",
+      "hours": "asd",
+      "contact": "asd",
+      "virtual": true,
+      "openNow": false
+    },
+    {
+      "id": "res_1785543364128_pv7io5",
+      "title": "new resource",
+      "category": "new resource",
+      "summary": "new resource",
+      "location": "new resource",
+      "hours": "new resource",
+      "contact": "new resource",
+      "virtual": false,
+      "openNow": true
     }
   ]
 }
